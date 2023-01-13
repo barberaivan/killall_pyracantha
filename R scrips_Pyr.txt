@@ -1,0 +1,142 @@
+﻿# to open a file
+mibase <- read.table("/home/daniel/Documents/Papers/R_pyr/r/Pyr.csv", header = TRUE, sep = ",") #Ubuntu 
+
+# to visualize data
+print(mibase) or print(mibase$column_name)
+
+﻿# to calculate a mean
+mean(mibase$t0, na.rm = TRUE) 
+
+# to install package data.table (answer yes and yes)
+install.packages("data.table")
+
+#to use the package
+library(data.table) 
+
+#find mean by treatment 
+# 1. to convert into dataframe
+setDT(mibase)
+
+
+mibase[ ,list(mean=mean(t0pond)), by=trat]
+mibase[ ,list(mean=mean(t1, na.rm = TRUE)), by=trat]
+mibase[ ,list(mean=mean(t1, na.rm = TRUE)), by=.(sp, trat)]
+mibase[ ,list(mean=mean(t1, na.rm = TRUE)), by=.(trat,dom)]
+
+mibase[ ,list(mean=mean(t0pond, na.rm = TRUE)), by=trat]
+mibase[ ,list(mean=mean(t1, na.rm = TRUE)), by=trat]
+mibase[ ,list(mean=mean(t2, na.rm = TRUE)), by=trat]
+mibase[ ,list(mean=mean(t3, na.rm = TRUE)), by=trat]
+mibase[ ,list(mean=mean(t4, na.rm = TRUE)), by=trat]
+mibase[ ,list(mean=mean(t5, na.rm = TRUE)), by=trat]
+
+
+
+
+#TO CALCULATE STANDARD ERROR
+library(data.table) 
+setDT(mibase)
+
+library(plotrix)
+
+#for times (minutes)
+mibase[ ,list(std.error=std.error(t0pond, na.rm = TRUE)), by=.(trat)]
+mibase[ ,list(std.error=std.error(t1, na.rm = TRUE)), by=.(trat)]
+mibase[ ,list(std.error=std.error(t2, na.rm = TRUE)), by=.(trat)]
+mibase[ ,list(std.error=std.error(t3, na.rm = TRUE)), by=.(trat)]
+mibase[ ,list(std.error=std.error(t4, na.rm = TRUE)), by=.(trat)]
+
+#for shrub height (cm)
+mibase[ ,list(std.error=std.error(alt0, na.rm = TRUE)), by=.(trat)]
+mibase[ ,list(std.error=std.error(alt1, na.rm = TRUE)), by=.(trat)]
+mibase[ ,list(std.error=std.error(alt2, na.rm = TRUE)), by=.(trat)]
+mibase[ ,list(std.error=std.error(alt3, na.rm = TRUE)), by=.(trat)]
+mibase[ ,list(std.error=std.error(alt4, na.rm = TRUE)), by=.(trat)]
+mibase[ ,list(std.error=std.error(alt5, na.rm = TRUE)), by=.(trat)]
+
+#for number of fruits
+mibase[ ,list(std.error=std.error(frutos0, na.rm = TRUE)), by=.(trat)]
+mibase[ ,list(std.error=std.error(frutos1, na.rm = TRUE)), by=.(trat)]
+mibase[ ,list(std.error=std.error(frutos2, na.rm = TRUE)), by=.(trat)]
+mibase[ ,list(std.error=std.error(frutos3, na.rm = TRUE)), by=.(trat)]
+mibase[ ,list(std.error=std.error(frutos4, na.rm = TRUE)), by=.(trat)]
+mibase[ ,list(std.error=std.error(frutos5, na.rm = TRUE)), by=.(trat)]
+
+
+#COUNTS using data.table
+mibase[, .(count = .N), by=.(trat,dom)]
+
+
+
+
+
+# Generalized lineal model
+# with factors
+
+fit <- glm(sup5 ~ (trat), family =binomial(link = "logit"), data = mibase)
+summary(fit)
+anova(fit)
+
+fit <- glm(alt5 ~ (trat), family =binomial(link = "logit"), data = mibase)
+summary(fit)
+anova(fit)
+
+
+fit <- glm(frutos5 ~ (trat), family =binomial(link = "logit"), data = mibase)
+summary(fit)
+anova(fit)
+
+
+
+
+#no use
+fit <- glm(sup5 ~ (trat+dom+alt0)^3, family =binomial(link = "logit"), data = mibase)
+summary(fit)
+anova(fit)
+
+fit <- glm(alt5 ~ (sp+trat)^2, family =gaussian(link = "identity"), data = mibase)
+fit <- glm(alt0 ~ (sp+trat)^2, family =gaussian(link = "identity"), data = mibase)
+
+
+# And distributions types are the following:
+
+family(object, …)
+binomial(link = "logit")
+gaussian(link = "identity")
+Gamma(link = "inverse")
+inverse.gaussian(link = "1/mu^2")
+poisson(link = "log")
+quasi(link = "identity", variance = "constant")
+quasibinomial(link = "logit")
+quasipoisson(link = "log")
+
+
+
+#FIGURE 2a
+#to open file
+figsup <- read.table("/home/daniel/Documents/Papers/R_pyr/r/figsup.csv", header = TRUE, sep = ",")
+
+
+# set working directory
+setwd("/home/daniel/Documents/Papers/R_pyr/fig/")
+
+#To save the figure as jpg
+jpeg(file = "Figura2a.jpg", width = 12, height = 10, units = "cm", quality = 95, res = 300) 
+
+#Basic plot command and details
+plot(figsup$t, figsup$a, xlim=c(0,5), ylim=c(0,100), xlab="Año", ylab="Supervivencia (%)", pch=1, cex=2, cex.lab=1.5, cex.axis=1.5)
+#to add other plots
+points(figsup$t, figsup$b, pch=21, cex=2)
+points(figsup$t, figsup$c, pch=16, cex=2)
+
+#to add lines joining datapoints
+lines(figsup$t, figsup$a) 
+lines(figsup$t, figsup$b) 
+lines(figsup$t, figsup$c) 
+
+#to shut file and be able to open in another program
+dev.off () 
+
+#FIGURE 2b....
+#to open file
+figalt <- read.table("/home/daniel/Documents/Papers/R_pyr/r/falt.csv", header = TRUE, sep = ",")
