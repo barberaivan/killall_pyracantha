@@ -249,7 +249,7 @@ surv_dom <-
   
   facet_wrap(vars(trat), nrow = 1) +
   ylim(0, 1) + 
-  xlab("Años poscorte inicial") + 
+  xlab("Años poscorte") + 
   ylab("Supervivencia") + 
   theme(panel.grid.minor = element_blank(),
         axis.title.y = element_blank(),
@@ -362,7 +362,7 @@ surv_marg <-
   facet_wrap(vars(trat), nrow = 1) +
   
   ylim(0, 1) + 
-  xlab("Años poscorte inicial") + 
+  xlab("Años poscorte") + 
   theme(panel.grid.minor = element_blank(),
         axis.title.y = element_blank(),
         axis.title.x = element_blank(),
@@ -414,9 +414,9 @@ surv_plot <- egg::ggarrange(
   ncol = 1
 )
 
-# ggsave("plots/survival.png", surv_plot,
-#        width = 17, height = 13,
-#        units = "cm")
+ggsave("plots/survival2.png", surv_plot,
+       width = 16, height = 13,
+       units = "cm")
 
 
 # Altura del rebrote modelo ------------------------------------------------
@@ -571,15 +571,15 @@ ggplot(alt_pred, aes(x = alt0, y = p_mle, ymin = p_lower,
   xlab("Altura inicial (cm)") + 
   ylab("Altura del rebrote (cm)") +
   scale_y_continuous(
-    sec.axis = sec_axis(trans= ~ . * 1, name = "Años poscorte inicial")
+    sec.axis = sec_axis(trans= ~ . * 1, name = "Años poscorte")
   ) + 
   theme(legend.position = "bottom",
         legend.title = element_blank(),
         axis.ticks.y.right = element_blank(),
         axis.text.y.right = element_blank()) 
 
-# ggsave("plots/altura_alt0_yfixed.png",       ## OJO, quitar yfixed si se guarda con scales = free_y
-#        width = 17, height = 15, units = "cm")
+ggsave("plots/altura_alt0_yfixed.png",       ## OJO, quitar yfixed si se guarda con scales = free_y
+       width = 16, height = 15, units = "cm")
 
 # (con especie)
 ggplot(alt_pred_sp, 
@@ -591,23 +591,24 @@ ggplot(alt_pred_sp,
                                                colour = sp, fill = sp),
              inherit.aes = F, shape = 19, alpha = 0.7) +
   scale_colour_viridis(discrete = TRUE, option = "A", end = 0.6,
-                       labels = c("P. angustifolia", "P. atalantoides")) +
+                       labels = c("*P. angustifolia*", "*P.* aff. *atalantioides*")) +
   scale_fill_viridis(discrete = TRUE, option = "A", end = 0.6,
-                     labels = c("P. angustifolia", "P. atalantoides")) +
+                     labels = c("*P. angustifolia*", "*P.* aff. *atalantioides*")) +
   facet_nested(rows = vars(year), cols = vars(trat, dom)) +#, 
   #scales = "free_y") + 
   xlab("Altura inicial (cm)") + 
   ylab("Altura del rebrote (cm)") +
   scale_y_continuous(
-    sec.axis = sec_axis(trans= ~ . * 1, name = "Años poscorte inicial")
+    sec.axis = sec_axis(trans= ~ . * 1, name = "Años poscorte")
   ) + 
   theme(legend.position = "bottom",
+        legend.text = ggtext::element_markdown(), # para usar codigo markdown en la legenda
         legend.title = element_blank(),
         axis.ticks.y.right = element_blank(),
         axis.text.y.right = element_blank()) #+ 
 
-# ggsave("plots/altura_sp_alt0_solo intercept de sp_yfixed.png", 
-#        height = 17, width = 20, units = "cm")
+ggsave("plots/altura_sp_alt0_solo intercept de sp_yfixed.png",
+       height = 16, width = 20, units = "cm")
 
 # Altura del rebrote plots (histogramas) -----------------------------------
 
@@ -616,7 +617,7 @@ alt_marg <-
   geom_boxplot(fill = "black", alpha = 0.3, width = 0.4) +
   # geom_jitter(alpha = 0.5, width = 0.1) + 
   facet_wrap(vars(trat), nrow = 1) +
-  xlab("Años poscorte inicial") + 
+  xlab("Años poscorte") + 
   theme(panel.grid.minor = element_blank(),
         axis.title.y = element_blank(),
         axis.title.x = element_blank(),
@@ -637,7 +638,7 @@ alt_alt <-
                      name = "Clase de altura\ninicial (cm)") +
   # facet_grid(cols = vars(trat), rows = vars(agg_type)) +
   facet_wrap(vars(trat), nrow = 1) +
-  xlab("Años poscorte inicial") + 
+  xlab("Años poscorte") + 
   ylab("Altura (cm)") +
   theme(panel.grid.minor = element_blank(),
         # axis.title.y = element_blank(),
@@ -660,7 +661,7 @@ alt_dom <-
   scale_fill_viridis(discrete = TRUE, option = "D", end = 0.6) +
   # facet_grid(cols = vars(trat), rows = vars(agg_type)) +
   facet_wrap(vars(trat), nrow = 1) +
-  xlab("Años poscorte inicial") + 
+  xlab("Años poscorte") + 
   theme(panel.grid.minor = element_blank(),
         axis.title.y = element_blank(),
         # axis.title.x = element_blank(),
@@ -683,7 +684,7 @@ alt_sp <-
                      labels = c("P. angustifolia", "P. atalantoides")) +
   # facet_grid(cols = vars(trat), rows = vars(agg_type)) +
   facet_wrap(vars(trat), nrow = 1) +
-  xlab("Años poscorte inicial") + 
+  xlab("Años poscorte") + 
   theme(panel.grid.minor = element_blank(),
         axis.title.y = element_blank(),
         # axis.title.x = element_blank(),
@@ -704,9 +705,9 @@ alt_plot <- egg::ggarrange(
   ncol = 1
 )
 
-# ggsave("plots/altura.png", alt_plot,
-#        width = 17, height = 13,
-#        units = "cm")
+ggsave("plots/altura.png", alt_plot,
+       width = 16, height = 13,
+       units = "cm")
 
 
 # con especie
@@ -859,7 +860,7 @@ frut_marg <-
   geom_boxplot(fill = "black", alpha = 0.3, width = 0.4) +
   # geom_jitter(alpha = 0.5, width = 0.1) + 
   facet_wrap(vars(trat), nrow = 1) +
-  xlab("Años poscorte inicial") + 
+  xlab("Años poscorte") + 
   theme(panel.grid.minor = element_blank(),
         axis.title.y = element_blank(),
         axis.title.x = element_blank(),
@@ -881,7 +882,7 @@ frut_alt <-
                      name = "Clase de altura\ninicial (cm)") +
   # facet_grid(cols = vars(trat), rows = vars(agg_type)) +
   facet_wrap(vars(trat), nrow = 1) +
-  xlab("Años poscorte inicial") + 
+  xlab("Años poscorte") + 
   ylab("Número de frutos") +
   theme(panel.grid.minor = element_blank(),
         # axis.title.y = element_blank(),
@@ -904,7 +905,7 @@ frut_dom <-
   scale_fill_viridis(discrete = TRUE, option = "D", end = 0.6) +
   # facet_grid(cols = vars(trat), rows = vars(agg_type)) +
   facet_wrap(vars(trat), nrow = 1) +
-  xlab("Años poscorte inicial") + 
+  xlab("Años poscorte") + 
   theme(panel.grid.minor = element_blank(),
         axis.title.y = element_blank(),
         # axis.title.x = element_blank(),
@@ -923,9 +924,9 @@ frut_plot <- egg::ggarrange(
   ncol = 1
 )
 
-# ggsave("plots/frutos.png", frut_plot,
-#        width = 17, height = 13,
-#        units = "cm")
+ggsave("plots/frutos.png", frut_plot,
+       width = 16, height = 13,
+       units = "cm")
 
 
 # Modelos incluyendo especie - (para tabla de anovas) ----------------------
